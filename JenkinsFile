@@ -1,0 +1,46 @@
+node{
+
+  def mavenHome = tool name: "maven3.8.2"  
+	  
+      echo "GitHub BranhName ${env.BRANCH_NAME}"
+      echo "Jenkins Job Number ${env.BUILD_NUMBER}"
+      echo "Jenkins Node Name ${env.NODE_NAME}"
+  
+      echo "Jenkins Home ${env.JENKINS_HOME}"
+      echo "Jenkins URL ${env.JENKINS_URL}"
+      echo "JOB Name ${env.JOB_NAME}" 
+	  
+  stage('CheckOutCode')
+  {
+  git branch: 'development', credentialsId: '1e98c248-b5b2-45cf-980d-d9d6749ca537', url: 'https://github.com/mdr-projects/maven-web-application.git'
+  }
+
+
+  stage('Bulid')
+  {
+  sh "${mavenHome}/bin/mvn clean package"
+  }
+  
+  stage('SonarQubeReport'){
+  sh "${mavenHome}/bin/mvn clean sonar:sonar"
+  }
+  stage('UploadArtifactIntoNexus'){
+  sh "${mavenHome}/bin/mvn clean deploy"
+  }
+  
+  stage('DeployAppIntoTomcatServer')
+  {
+  sshagent(['5f858c12-70e8-41a2-9c9b-abda972d25f7']) {
+    sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@52.66.206.192:/opt/apache-tomcat-9.0.52/webapps/"
+    }
+    }
+  stage('SendEmailNotification'){
+	emailext body: '''Bulid Over...!!
+
+    Regards,
+    Machnedrappa,
+    7013670191''', subject: 'Bulid Over...!!', to: 'kurubamachendrappa025@gamil.com'
+  }
+   
+   
+   }
