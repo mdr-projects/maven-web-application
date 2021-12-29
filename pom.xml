@@ -98,13 +98,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Releases Nexus Repository</name>
-	      <url>http://13.233.163.217:7013/machendra/repository/wallmart-release/</url>
+	      <url>http://13.234.113.84:7013/repository/Flipkart-Release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Snapshot Nexus Repository </name>
-	      <url>http://13.233.163.217:7013/machendra/repository/wallmart-snapshot/</url>
+	      <url>http://13.234.113.84:7013/repository/Flipkart-Snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
